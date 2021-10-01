@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "@types/express": "^4.17.13",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.10.2",
     "jest": "^27.2.4",
@@ -17,5 +18,8 @@
     "start": "node dist/index.ts",
     "build": "tsc",
     "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
