@@ -7,6 +7,8 @@ import express, {
 
 export const app: express.Express = express()
 
+app.use(express.json({ limit: '1kb' }))
+
 const router = exRouter()
 
 function headerCheck(req: Request, res: Response, next: NextFunction) {
@@ -23,6 +25,9 @@ router.use(headerCheck)
 
 router.get('/', (req, res) => {
   res.status(200).send('ok')
+})
+router.post('/', (req, res) => {
+  res.status(201).send('ok')
 })
 
 app.use('/', router)
