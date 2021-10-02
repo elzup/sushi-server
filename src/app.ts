@@ -11,7 +11,7 @@ app.use(express.json({ limit: '1kb' }))
 
 const router = exRouter()
 
-function headerCheck(req: Request, res: Response, next: NextFunction) {
+function webServer(req: Request, res: Response, next: NextFunction) {
   if (req.url.length > 10) {
     res
       .status(414)
@@ -21,13 +21,17 @@ function headerCheck(req: Request, res: Response, next: NextFunction) {
   next()
 }
 
-router.use(headerCheck)
-
-router.get('/', (req, res) => {
+function getApp(req: Request, res: Response, _next: NextFunction) {
   res.status(200).send('ok')
-})
-router.post('/', (req, res) => {
+}
+
+function postApp(req: Request, res: Response, _next: NextFunction) {
   res.status(201).send('ok')
-})
+}
+
+router.use(webServer)
+
+router.get('/', getApp)
+router.post('/', postApp)
 
 app.use('/', router)
