@@ -1,7 +1,11 @@
-import express from 'express'
+import express, { Router as exRouter } from 'express'
 
 export const app: express.Express = express()
 
-app.get('/', (req, res) => {
-  res.send('ok')
+const router = exRouter()
+
+router.get('/', (req, res) => {
+  res.status(200).send('ok')
 })
+
+app.use('/', router)
