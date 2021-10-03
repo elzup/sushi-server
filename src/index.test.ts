@@ -34,6 +34,19 @@ test('417 Expectation Failed', async () => {
 
 test.todo('431 Request Header Fields Too Large')
 
+test('500 Internal Server Error', async () => {
+  const res = await api.put('/faucet').send({ thing: 'yunomi' }).expect(200)
+
+  expect(res.body).toMatchInlineSnapshot(`
+    Object {
+      "maked": "Hot Green Tea",
+    }
+  `)
+
+  await api.put('/faucet').send({ thing: 'sushi' }).expect(400)
+  await api.put('/faucet').send({ thing: 'hand' }).expect(500)
+})
+
 test('501 Not Implemented', async () => {
   await api.trace('/').expect(501)
 })

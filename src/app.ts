@@ -1,3 +1,4 @@
+import { watch } from 'fs'
 import express, {
   NextFunction,
   Request,
@@ -39,6 +40,24 @@ function postApp(req: Request, res: Response, _next: NextFunction) {
   res.status(201).send('ok')
 }
 
+function putFaucet(
+  req: Request<{}, { maked: string }, { thing: string }>,
+  res: Response,
+  _next: NextFunction
+) {
+  const { thing } = req.body
+
+  if (thing === 'hand') {
+    // @ts-ignore
+    thing.wash.wash()
+  }
+  if (thing === 'yunomi') {
+    res.send({ maked: 'Hot Green Tea' }).end()
+  } else {
+    res.status(400).end()
+  }
+}
+
 app.use(express.json({ limit: '1kb' }))
 app.use(cors)
 
@@ -46,5 +65,6 @@ app.use(webServer)
 
 router.get('/', getApp)
 router.post('/', postApp)
+router.put('/faucet', putFaucet)
 
 app.use('/', router)
