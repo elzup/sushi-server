@@ -8,6 +8,10 @@ test('200', async () => {
   const _res = await api.get('/').expect(200)
 })
 
+test('405 Method Not Allowed', async () => {
+  await api.get('/faucet').expect(405)
+})
+
 test('413 Payload Too Large', async () => {
   const _res = await api
     .post('/')
