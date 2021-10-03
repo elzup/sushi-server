@@ -26,7 +26,10 @@ test('414 URI Too Long', async () => {
   expect(res.body.message).toMatchInlineSnapshot(
     `"URI length < 10 (/?Salmon_Salmon_Salmon) = 22"`
   )
-  expect(res.statusCode).toBe(414)
+})
+
+test('417 Expectation Failed', async () => {
+  await api.get('/').set({ expect: '100-continue' }).expect(417)
 })
 
 test.todo('431 Request Header Fields Too Large')
