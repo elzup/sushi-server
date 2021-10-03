@@ -7,9 +7,6 @@ import express, {
 
 export const app: express.Express = express()
 
-app.use(express.json({ limit: '1kb' }))
-app.use(cors)
-
 const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE']
 
 function cors(req: Request, res: Response, next: NextFunction) {
@@ -40,7 +37,10 @@ function postApp(req: Request, res: Response, _next: NextFunction) {
   res.status(201).send('ok')
 }
 
-router.use(webServer)
+app.use(express.json({ limit: '1kb' }))
+app.use(cors)
+
+app.use(webServer)
 
 router.get('/', getApp)
 router.post('/', postApp)
