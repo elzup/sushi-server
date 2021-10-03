@@ -16,7 +16,7 @@ function webServer(req: Request, res: Response, next: NextFunction) {
     res
       .status(414)
       .send({ message: `URI length < 10 (${req.url}) = ${req.url.length}` })
-    return
+      .end()
   }
   next()
 }
