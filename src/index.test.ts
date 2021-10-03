@@ -31,4 +31,8 @@ test('414 URI Too Long', async () => {
 
 test.todo('431 Request Header Fields Too Large')
 
+test('501 Not Implemented', async () => {
+  await api.trace('/').expect(501)
+})
+
 test.todo('503 Service Unavailable')

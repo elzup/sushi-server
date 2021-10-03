@@ -8,6 +8,17 @@ import express, {
 export const app: express.Express = express()
 
 app.use(express.json({ limit: '1kb' }))
+app.use(cors)
+
+const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE']
+
+function cors(req: Request, res: Response, next: NextFunction) {
+  if (!allowedMethods.includes(req.method)) {
+    res.status(501).end()
+  }
+
+  next()
+}
 
 const router = exRouter()
 
