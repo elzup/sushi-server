@@ -41,6 +41,13 @@ function systemFilter(req: Request, res: Response, next: NextFunction) {
   next()
 }
 
+function acceptFilter(req: Request, res: Response, next: NextFunction) {
+  if (!req.acceptsCharsets('utf-8')) {
+    res.status(406).end()
+  }
+  next()
+}
+
 const getApp: RequestHandler = (req, res, _next) => {
   res.status(200).send('ok')
 }
@@ -94,6 +101,7 @@ app.use(express.json({ limit: MAX_CONTENT }))
 app.use(cors)
 
 app.use(systemFilter)
+app.use(acceptFilter)
 
 router.route('/').get(getApp).post(postApp).all(methodNotAllowed)
 router.route('/order').post(postOrder).all(methodNotAllowed)

@@ -43,6 +43,14 @@ test('400 Bad Request', async () => {
   await api.post('/order').send({ item: 'tamago', count: 'one' }).expect(400)
 })
 
+test('406 Not Accepted', async () => {
+  await api
+    .post('/order')
+    .set('Accept-Charset', 'iso-8859-1')
+    .send({ item: 'tamago', count: 10 })
+    .expect(406)
+})
+
 test('415 Unsupported Media Type', async () => {
   api
     .post('/order')
