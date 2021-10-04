@@ -65,7 +65,7 @@ const postOrder: RequestHandler = (req, res, _next) => {
   if (isOrder(order)) {
     res.status(201).send('ok')
   } else {
-    res.status(401).end()
+    res.status(400).end()
   }
 }
 

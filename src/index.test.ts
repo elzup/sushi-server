@@ -38,6 +38,11 @@ test('413 Payload Too Large', async () => {
     .expect(413)
 })
 
+test('400 Bad Request', async () => {
+  await api.post('/order').send({ item: 'tamago', count: 10 }).expect(201)
+  await api.post('/order').send({ item: 'tamago', count: 'one' }).expect(400)
+})
+
 test('415 Unsupported Media Type', async () => {
   api
     .post('/order')
