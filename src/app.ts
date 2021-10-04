@@ -10,13 +10,22 @@ export const app: express.Express = express()
 const router = exRouter()
 
 const ALLOWED_METHODS = ['GET', 'POST', 'PUT', 'DELETE']
+const MAX_CONTENT = 1e3
 
 function cors(req: Request, res: Response, next: NextFunction) {
   if (!ALLOWED_METHODS.includes(req.method)) {
     res.status(501).end()
   }
-  if (req.headers['expect'] === '100-continue') {
-    res.status(417).end()
+  const contentLength = Number(req.headers['content-length'] || 0)
+  const has100Req = req.headers['expect'] === '100-continue'
+  const contentLengthOver = contentLength > MAX_CONTENT
+
+  if (has100Req) {
+    if (contentLengthOver) {
+      res.status(417).end()
+    } else {
+      res.status(100).end()
+    }
   }
 
   next()
@@ -59,9 +68,9 @@ function putFaucet(
 }
 
 const methodNotAllowed: RequestHandler = (req, res, _next) =>
-  res.status(405).send()
+  res.status(405).send().end()
 
-app.use(express.json({ limit: '1kb' }))
+app.use(express.json({ limit: MAX_CONTENT }))
 app.use(cors)
 
 app.use(systemFilter)

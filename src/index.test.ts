@@ -12,16 +12,30 @@ test('405 Method Not Allowed', async () => {
   await api.get('/faucet').expect(405)
 })
 
-test('413 Payload Too Large', async () => {
-  const _res = await api
-    .post('/')
-    .send({ large: 'a'.repeat(1024) })
-    .expect(413)
+test.todo('100 Continue')
+// test('100 Continue', async () => {
+//   await api
+//     .post('/')
+//     .set({ expect: '100-continue', 'content-length': 100 })
+//     .expect(100)
+// })
 
-  const _res2 = await api
+test('417 Expectation Failed', async () => {
+  await api
+    .get('/')
+    .set({ expect: '100-continue', 'content-length': 2000 })
+    .expect(417)
+})
+
+test('413 Payload Too Large', async () => {
+  await api
     .post('/')
     .send({ large: 'a'.repeat(900) })
     .expect(201)
+  await api
+    .post('/')
+    .send({ large: 'a'.repeat(1024) })
+    .expect(413)
 })
 
 test('414 URI Too Long', async () => {
@@ -30,10 +44,6 @@ test('414 URI Too Long', async () => {
   expect(res.body.message).toMatchInlineSnapshot(
     `"URI length < 10 (/?Salmon_Salmon_Salmon) = 22"`
   )
-})
-
-test('417 Expectation Failed', async () => {
-  await api.get('/').set({ expect: '100-continue' }).expect(417)
 })
 
 test.todo('431 Request Header Fields Too Large')
