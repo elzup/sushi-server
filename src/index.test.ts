@@ -38,6 +38,14 @@ test('413 Payload Too Large', async () => {
     .expect(413)
 })
 
+test('415 Unsupported Media Type', async () => {
+  api
+    .post('/order')
+    .set('content-type', 'text/plain')
+    .send('tamago')
+    .expect(415)
+})
+
 test('414 URI Too Long', async () => {
   const res = await api.get('/?Salmon_Salmon_Salmon').expect(414)
 

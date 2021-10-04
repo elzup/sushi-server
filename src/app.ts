@@ -45,8 +45,28 @@ const getApp: RequestHandler = (req, res, _next) => {
   res.status(200).send('ok')
 }
 
+// TODO: remove
 const postApp: RequestHandler = (req, res, _next) => {
   res.status(201).send('ok')
+}
+
+type Order = {
+  item: string
+  count: number
+}
+
+const isOrder = (order: Record<string, string | number>): order is Order => {
+  return typeof order['item'] === 'string' && typeof order['count'] === 'number'
+}
+
+const postOrder: RequestHandler = (req, res, _next) => {
+  const order = req.body
+
+  if (isOrder(order)) {
+    res.status(201).send('ok')
+  } else {
+    res.status(401).end()
+  }
 }
 
 function putFaucet(
@@ -76,6 +96,7 @@ app.use(cors)
 app.use(systemFilter)
 
 router.route('/').get(getApp).post(postApp).all(methodNotAllowed)
+router.route('/order').post(postOrder).all(methodNotAllowed)
 router.route('/faucet').put(putFaucet).all(methodNotAllowed)
 
 app.use('/', router)
