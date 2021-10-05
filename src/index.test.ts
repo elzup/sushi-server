@@ -12,12 +12,11 @@ test('405 Method Not Allowed', async () => {
   api.get('/faucet').expect(405)
 })
 
-test.todo('100 Continue')
 // test('100 Continue', async () => {
 //   await api
 //     .post('/')
-//     .set({ expect: '100-continue', 'content-length': 100 })
-//     .expect(100)
+//     .set({ expect: '100-continue' })
+//     .send({ large: 'a'.repeat(100) })
 // })
 
 test('417 Expectation Failed', async () => {

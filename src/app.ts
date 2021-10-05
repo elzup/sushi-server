@@ -24,7 +24,7 @@ function cors(req: Request, res: Response, next: NextFunction) {
     if (contentLengthOver) {
       res.status(417).end()
     } else {
-      res.status(100).end()
+      res.writeContinue()
     }
   }
 
