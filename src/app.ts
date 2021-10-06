@@ -48,13 +48,31 @@ function acceptFilter(req: Request, res: Response, next: NextFunction) {
   next()
 }
 
+function preconditionFilter(req: Request, res: Response, next: NextFunction) {
+  const missing = false // TDOO
+
+  if (missing) {
+    // const missingHasPrecondition = false
+    // if (missingHasPrecondition) {
+    //   res.status(412).end()
+    // }
+    next()
+  }
+
+  next()
+}
+
 const getApp: RequestHandler = (req, res, _next) => {
-  res.status(200).send('ok')
+  res.status(200).send({ result: 'ok' })
 }
 
 // TODO: remove
 const postApp: RequestHandler = (req, res, _next) => {
   res.status(201).send('ok')
+}
+
+const putApp: RequestHandler = (req, res, _next) => {
+  res.status(200).send({ result: 'ok' })
 }
 
 type Order = {
@@ -102,8 +120,9 @@ app.use(cors)
 
 app.use(systemFilter)
 app.use(acceptFilter)
+app.use(preconditionFilter)
 
-router.route('/').get(getApp).post(postApp).all(methodNotAllowed)
+router.route('/').get(getApp).post(postApp).put(putApp).all(methodNotAllowed)
 router.route('/order').post(postOrder).all(methodNotAllowed)
 router.route('/faucet').put(putFaucet).all(methodNotAllowed)
 

@@ -50,6 +50,17 @@ test('406 Not Accepted', async () => {
     .expect(406)
 })
 
+test('304 Not Modified', async () => {
+  const res = await api.get('/').expect(200)
+  const eTag = String(res.headers['etag'])
+
+  await api
+    .get('/')
+    .set('If-Not-Match', eTag + '-pseudo-old')
+    .expect(200)
+  await api.get('/').set('If-None-Match', eTag).expect(304)
+})
+
 test('415 Unsupported Media Type', async () => {
   api
     .post('/order')
