@@ -62,17 +62,20 @@ function preconditionFilter(req: Request, res: Response, next: NextFunction) {
   next()
 }
 
-const getApp: RequestHandler = (req, res, _next) => {
-  res.status(200).send({ result: 'ok' })
+const getApp: RequestHandler = (req, res, next) => {
+  res.status(200).send({ result: 'ok' }).end()
+  next()
 }
 
 // TODO: remove
-const postApp: RequestHandler = (req, res, _next) => {
-  res.status(201).send('ok')
+const postApp: RequestHandler = (req, res, next) => {
+  res.status(201).send({ result: 'ok' }).end()
+  next()
 }
 
-const putApp: RequestHandler = (req, res, _next) => {
-  res.status(200).send({ result: 'ok' })
+const putApp: RequestHandler = (req, res, next) => {
+  res.status(200).send({ result: 'ok' }).end()
+  next()
 }
 
 type Order = {
