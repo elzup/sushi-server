@@ -62,9 +62,7 @@ test('304 Not Modified', async () => {
 })
 
 test('412 Precondition Failed', async () => {
-  const res = await api.get('/static/ikura.txt').expect(200)
-
-  expect(res.body).toMatchInlineSnapshot(`Object {}`)
+  await api.get('/static/ikura.txt').expect(200)
   await api.get('/static/ikura.txt').set('If-Match', 'invalid').expect(412)
 })
 
@@ -77,7 +75,7 @@ test('415 Unsupported Media Type', async () => {
 })
 
 test('414 URI Too Long', async () => {
-  const res = await api.get('/?' + 'a'.repeat(100)).expect(414)
+  await api.get('/?' + 'a'.repeat(100)).expect(414)
 })
 
 test.todo('431 Request Header Fields Too Large')
