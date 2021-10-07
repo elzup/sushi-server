@@ -11,6 +11,7 @@ const router = exRouter()
 
 const ALLOWED_METHODS = ['GET', 'POST', 'PUT', 'DELETE']
 const MAX_CONTENT = 1e3
+const URL_MAX_LENGTH = 100
 
 function cors(req: Request, res: Response, next: NextFunction) {
   if (!ALLOWED_METHODS.includes(req.method)) {
@@ -32,11 +33,8 @@ function cors(req: Request, res: Response, next: NextFunction) {
 }
 
 function systemFilter(req: Request, res: Response, next: NextFunction) {
-  if (req.url.length > 10) {
-    res
-      .status(414)
-      .send({ message: `URI length < 10 (${req.url}) = ${req.url.length}` })
-      .end()
+  if (req.url.length > URL_MAX_LENGTH) {
+    res.status(414).end()
   }
   next()
 }
@@ -128,5 +126,6 @@ app.use(preconditionFilter)
 router.route('/').get(getApp).post(postApp).put(putApp).all(methodNotAllowed)
 router.route('/order').post(postOrder).all(methodNotAllowed)
 router.route('/faucet').put(putFaucet).all(methodNotAllowed)
+router.use('/static', express.static(__dirname + '/public'))
 
 app.use('/', router)

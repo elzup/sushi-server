@@ -61,9 +61,12 @@ test('304 Not Modified', async () => {
   await api.get('/').set('If-None-Match', eTag).expect(304)
 })
 
-// test('412 Precondition Failed', async () => {
-//   await api.get('/').set('If-Match', '"invalid"').expect(412)
-// })
+test('412 Precondition Failed', async () => {
+  const res = await api.get('/static/ikura.txt').expect(200)
+
+  expect(res.body).toMatchInlineSnapshot(`Object {}`)
+  await api.get('/static/ikura.txt').set('If-Match', 'invalid').expect(412)
+})
 
 test('415 Unsupported Media Type', async () => {
   api
@@ -74,11 +77,7 @@ test('415 Unsupported Media Type', async () => {
 })
 
 test('414 URI Too Long', async () => {
-  const res = await api.get('/?Salmon_Salmon_Salmon').expect(414)
-
-  expect(res.body.message).toMatchInlineSnapshot(
-    `"URI length < 10 (/?Salmon_Salmon_Salmon) = 22"`
-  )
+  const res = await api.get('/?' + 'a'.repeat(100)).expect(414)
 })
 
 test.todo('431 Request Header Fields Too Large')
