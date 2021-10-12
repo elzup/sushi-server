@@ -80,16 +80,18 @@ test('414 URI Too Long', async () => {
 
 test.todo('431 Request Header Fields Too Large')
 
-test('500 Internal Server Error', async () => {
-  const req = api.put('/faucet').send({ thing: 'yunomi' }).expect(200)
+test('202 Accepted', async () => {
+  const res = await api.put('/faucet').send({ thing: 'yunomi' }).expect(202)
 
-  api.put('/faucet').send({ thing: 'sushi' }).expect(400)
-  api.put('/faucet').send({ thing: 'hand' }).expect(500)
-  expect((await req).body).toMatchInlineSnapshot(`
+  expect(res.body).toMatchInlineSnapshot(`
     Object {
       "maked": "Hot Green Tea",
     }
   `)
+})
+test('500 Internal Server Error', async () => {
+  api.put('/faucet').send({ thing: 'sushi' }).expect(400)
+  api.put('/faucet').send({ thing: 'hand' }).expect(500)
 })
 
 test('501 Not Implemented', async () => {

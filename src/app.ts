@@ -107,7 +107,7 @@ function putFaucet(
     thing.wash.wash()
   }
   if (thing === 'yunomi') {
-    res.send({ maked: 'Hot Green Tea' }).end()
+    res.status(202).send({ maked: 'Hot Green Tea' }).end()
   } else {
     res.status(400).end()
   }
