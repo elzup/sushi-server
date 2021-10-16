@@ -76,6 +76,15 @@ const putApp: RequestHandler = (req, res, next) => {
   next()
 }
 
+const postTako: RequestHandler = (req, res, _next) => {
+  res.redirect(308, '/ika')
+}
+
+const postIka: RequestHandler = (req, res, next) => {
+  res.status(200).send({ result: 'ok' }).end()
+  next()
+}
+
 type Order = {
   item: string
   count: number
@@ -127,5 +136,8 @@ router.route('/').get(getApp).post(postApp).put(putApp).all(methodNotAllowed)
 router.route('/order').post(postOrder).all(methodNotAllowed)
 router.route('/faucet').put(putFaucet).all(methodNotAllowed)
 router.use('/static', express.static(__dirname + '/public'))
+
+router.route('/tako').post(postTako).all(methodNotAllowed)
+router.route('/ika').post(postIka).all(methodNotAllowed)
 
 app.use('/', router)

@@ -89,6 +89,11 @@ test('202 Accepted', async () => {
     }
   `)
 })
+
+test('308 Permanent Redirect', async () => {
+  api.put('/tako').send({}).expect(308)
+})
+
 test('500 Internal Server Error', async () => {
   api.put('/faucet').send({ thing: 'sushi' }).expect(400)
   api.put('/faucet').send({ thing: 'hand' }).expect(500)
