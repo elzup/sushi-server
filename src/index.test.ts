@@ -5,11 +5,11 @@ import { app } from './app'
 const api = request(app)
 
 test('200', async () => {
-  api.get('/').expect(200)
+  await api.get('/').expect(200)
 })
 
 test('405 Method Not Allowed', async () => {
-  api.get('/faucet').expect(405)
+  await api.get('/faucet').expect(405)
 })
 
 // test('100 Continue', async () => {
@@ -20,18 +20,18 @@ test('405 Method Not Allowed', async () => {
 // })
 
 test('417 Expectation Failed', async () => {
-  api
+  await api
     .get('/')
     .set({ expect: '100-continue', 'content-length': 2000 })
     .expect(417)
 })
 
 test('413 Payload Too Large', async () => {
-  api
+  await api
     .post('/')
     .send({ large: 'a'.repeat(900) })
     .expect(201)
-  api
+  await api
     .post('/')
     .send({ large: 'a'.repeat(1024) })
     .expect(413)
@@ -67,9 +67,9 @@ test('412 Precondition Failed', async () => {
 })
 
 test('415 Unsupported Media Type', async () => {
-  api
+  await api
     .post('/order')
-    .set('content-type', 'text/plain')
+    .set('content-type', 'invalid/format')
     .send('tamago')
     .expect(415)
 })
@@ -91,16 +91,16 @@ test('202 Accepted', async () => {
 })
 
 test('308 Permanent Redirect', async () => {
-  api.put('/tako').send({}).expect(308)
+  await api.post('/tako').send({}).expect(308)
 })
 
 test('500 Internal Server Error', async () => {
-  api.put('/faucet').send({ thing: 'sushi' }).expect(400)
-  api.put('/faucet').send({ thing: 'hand' }).expect(500)
+  await api.put('/faucet').send({ thing: 'sushi' }).expect(400)
+  await api.put('/faucet').send({ thing: 'hand' }).expect(500)
 })
 
 test('501 Not Implemented', async () => {
-  api.trace('/').expect(501)
+  await api.trace('/').expect(501)
 })
 
 test.todo('503 Service Unavailable')

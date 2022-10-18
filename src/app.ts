@@ -93,10 +93,11 @@ type Order = {
 const isOrder = (order: Record<string, string | number>): order is Order => {
   return typeof order['item'] === 'string' && typeof order['count'] === 'number'
 }
-const isJsonReq: RequestHandler = (req, res, _next) => {
+const isJsonReq: RequestHandler = (req, res, next) => {
   if (req.headers['content-type'] !== 'application/json') {
     res.status(415).end()
   }
+  next()
 }
 
 const postOrder: RequestHandler = (req, res, _next) => {
