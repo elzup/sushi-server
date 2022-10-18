@@ -84,7 +84,7 @@ test('202 Accepted', async () => {
   const res = await api.put('/faucet').send({ thing: 'yunomi' }).expect(202)
 
   expect(res.body).toMatchInlineSnapshot(`
-    Object {
+    {
       "maked": "Hot Green Tea",
     }
   `)
