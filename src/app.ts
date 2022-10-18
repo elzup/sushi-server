@@ -93,6 +93,11 @@ type Order = {
 const isOrder = (order: Record<string, string | number>): order is Order => {
   return typeof order['item'] === 'string' && typeof order['count'] === 'number'
 }
+const isJsonReq: RequestHandler = (req, res, _next) => {
+  if (req.headers['content-type'] !== 'application/json') {
+    res.status(415).end()
+  }
+}
 
 const postOrder: RequestHandler = (req, res, _next) => {
   const order = req.body
@@ -133,7 +138,7 @@ app.use(acceptFilter)
 app.use(preconditionFilter)
 
 router.route('/').get(getApp).post(postApp).put(putApp).all(methodNotAllowed)
-router.route('/order').post(postOrder).all(methodNotAllowed)
+router.route('/order').post(isJsonReq, postOrder).all(methodNotAllowed)
 router.route('/faucet').put(putFaucet).all(methodNotAllowed)
 router.use('/static', express.static(__dirname + '/public'))
 
