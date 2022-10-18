@@ -17,7 +17,7 @@ function cors(req: Request, res: Response, next: NextFunction) {
   if (!ALLOWED_METHODS.includes(req.method)) {
     res.status(501).end()
   }
-  const contentLength = Number(req.headers['content-length'] || 0)
+  const contentLength = Number(req.headers['content-length'] ?? 0)
   const has100Req = req.headers['expect'] === '100-continue'
   const contentLengthOver = contentLength > MAX_CONTENT
 
@@ -40,7 +40,7 @@ function systemFilter(req: Request, res: Response, next: NextFunction) {
 }
 
 function acceptFilter(req: Request, res: Response, next: NextFunction) {
-  if (!req.acceptsCharsets('utf-8')) {
+  if (req.acceptsCharsets('utf-8') !== 'utf-8') {
     res.status(406).end()
   }
   next()
