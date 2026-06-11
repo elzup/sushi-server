@@ -26,6 +26,6 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "supertest": "^6.3.0"
+    "supertest": "^7.0.0"
   }
 }
